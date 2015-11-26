@@ -1,0 +1,6 @@
+CFOOffice       ConfRoomNorth       ConfRoom   OfficeManagerOffice  CIOOffice
+0	        Hallway             CopierRoom Hallway              0
+CopierRoom      Hallway             MensBathroom Kitchen            Room
+0		Hallway		    0		 HallwayLocked	    0
+CEOOffice	Hallway		    0		 Reception	    0
+0		0		    0		 Elevator	    0
