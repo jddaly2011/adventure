@@ -11,7 +11,7 @@ class MapTile(object):
         self.ordinary =[]
         self.npcs= []
         self.moves = -1
-
+#        self.name = name
 #        self.default(player)
     def default(self, player):
 #        raise NotImplementedError()
@@ -185,7 +185,7 @@ class CFOOffice(MapTile):
     def __init__(self, x, y):
         super(CFOOffice,self).__init__(x, y)
         self.inventory = [items.USB(), items.Map()]
-        self.npcs =  [npcs.CFO(self.x, self.y)]
+        self.name = "CFOOffice"
     def intro_text(self):
         return """
         You are in a a CFO's office.
@@ -204,11 +204,11 @@ class CEOOffice(MapTile):
         super(CEOOffice,self).__init__(x, y)
 #        self.inventory = []
         self.npcs =  [npcs.CEO(self.x, self.y)]
+        self.name = "CEOOffice"
         
     def intro_text(self):
         return """
         You are in a a CEO's office.
-        A CEO is here
         """
 
     def modify_player(self, player):
@@ -229,6 +229,8 @@ class LockedDoorRoom(MapTile):
 class Reception(LockedDoorRoom):
     def __init__(self, x, y):
         super(Reception, self).__init__(x, y)
+        self.name = "Reception"
+
         self.solved = False 
         self.door = "north"
         self.inventory = [items.Map()]
@@ -278,6 +280,7 @@ class Reception(LockedDoorRoom):
 class HallwayLocked(LockedDoorRoom):
     def __init__(self, x, y):
         super(HallwayLocked, self).__init__(x, y)
+        self.name = "HallwayLocked"
         self.solved = False 
         self.door = "south"
 #        print self.moves
@@ -298,12 +301,6 @@ class HallwayLocked(LockedDoorRoom):
 
 
                         
-#         if player.badged:
-#             self.solved = True
-#             available_actions = self.available_actions()
-# #            self.exits_text()
-#         else:
-#             self.solved = False
     def intro_text(self):
         # for item in player.inventory:
         #     if hasattr(item, "worn") and item.worn:
@@ -338,6 +335,7 @@ class Elevator(LockedDoorRoom):
         self.ordinary = ['screen']
         self.solved = False 
         self.door = "north"
+        self.name = "Elevator"
 
     #self.inventory = [items.cake()]
 
@@ -395,6 +393,8 @@ class Kitchen(MapTile):
     def __init__(self, x, y):
         super(Kitchen,self).__init__(x, y)
         self.inventory = [items.Fridge()]
+        self.name = "Kitchen"
+        self.npcs =  [npcs.CFO(self.x, self.y)]
 
     def intro_text(self):
         return """
@@ -414,6 +414,7 @@ class ConfRoomNorth(MapTile):
         super(ConfRoomNorth,self).__init__(x, y)
         self.inventory = [items.Cake()]
         self.ordinary=['whiteboard','board']
+        self.name = "ConfRoomNorth"
 
     def intro_text(self):
         return """
@@ -432,10 +433,15 @@ class ConfRoomNorth(MapTile):
 
 
 class ConfRoomNorth1(MapTile):
+    def __init__(self, x, y):
+        super(ConfRoomNorth1,self).__init__(x, y)
+        self.name = "ConfRoomNorth1"
+
     def intro_text(self):
         return """
         A conference room. the lights are flickering and there is a case of water bottles here
         """
+
  
     def modify_player(self, player):
         #Room has no action on player
@@ -446,6 +452,9 @@ class ConfRoomNorth1(MapTile):
 
 
 class ConfRoomNorth2(MapTile):
+    def __init__(self, x, y):
+        self.name = "ConfRoomNorth2"
+
     def intro_text(self):
         return """
         An unremarkable conference room. There is a man on a screen looking at you.
@@ -459,6 +468,11 @@ class ConfRoomNorth2(MapTile):
         return "\t\tConference Romm North 2"
     
 class ConfRoom(MapTile):
+    def __init__(self, x, y):
+        super(ConfRoom,self).__init__(x, y)
+
+        self.name= "ConfRoom"
+    
     def intro_text(self):
         return """
         You are in another goddamn conference room
@@ -473,6 +487,10 @@ class ConfRoom(MapTile):
         
 
 class Room(MapTile):
+    def __init__(self, x, y):
+        super(Room,self).__init__(x, y)
+
+        self.name = "Room"
     def intro_text(self):
         return """
         You are in a room. A hideous room. 
@@ -486,6 +504,10 @@ class Room(MapTile):
         return "\t\tRoom"""
 
 class OfficeManagerOffice(MapTile):
+    def __init__(self, x, y):
+        super(OfficeManagerOffice,self).__init__(x, y)
+        
+        self.name = "OfficeManagerOffice"
     def intro_text(self):
         return """
         You are in the office manager's office.
@@ -500,6 +522,10 @@ class OfficeManagerOffice(MapTile):
         return "\t\tOffice Manager's office"
 
 class StorageCloset(MapTile):
+    def __init__(self, x, y):
+        super(StorageCloset, self).__init__(x, y)
+
+        self.name = "StorageCloset"
     def intro_text(self):
         return """
         You are in a storage closet. There are stores here
@@ -513,6 +539,9 @@ class StorageCloset(MapTile):
         return "\t\tStorage Closet"
 
 class Hallway(MapTile):
+    def __init__(self, x, y):
+        super(Hallway,self).__init__(x, y)
+        self.name = "Hallway"
     def intro_text(self):
         return """
         You are in an empty beige hallway. You feel empty inside.
@@ -527,6 +556,11 @@ class Hallway(MapTile):
 
 
 class CIOOffice(MapTile):
+    def __init__(self, x, y):
+        super(CIOOffice,self).__init__(x, y)
+        self.npcs =  [npcs.CIO(self.x, self.y)]
+
+        self.name = "CIOOffice"
     def intro_text(self):
         return """
         You are in the CIO's office
@@ -543,6 +577,10 @@ class CIOOffice(MapTile):
         self.moves += 1
 
 class CopierRoom(MapTile):
+    def __init__(self, x, y):
+        super(CopierRoom,self).__init__(x, y)
+
+        self.name = "CopierRoom"
     def intro_text(self):
         return """
         You are in a copier room.
@@ -555,6 +593,10 @@ class CopierRoom(MapTile):
         return "\t\tCopier Room"
 
 class MensBathroom(MapTile):
+    def __init__(self, x, y):
+        super(MensBathroom, self).__init__(x, y)
+
+        self.name = "MensBathroom"
     def intro_text(self):
         return """
         You are in a filthy mens room
@@ -568,6 +610,10 @@ class MensBathroom(MapTile):
         return "\t\tMens Bathroom"
 
 class MensStall(MapTile):
+    def __init__(self, x, y):
+        super(MensStall,self).__init__(x, y)
+
+        self.name = "MensStall"
     def intro_text(self):
         return """
         You are in a bathroom stall. There is graffiti on the walls.
@@ -582,6 +628,11 @@ class MensStall(MapTile):
 
 
 class MensUrinal(MapTile):
+    def __init__(self, x, y):
+        super(MensUrinal,self).__init__(x, y)
+
+        self.name = "MensUrinal"
+
     def intro_text(self):
         return """
         This is a men's unrinal.

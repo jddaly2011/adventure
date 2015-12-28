@@ -1,6 +1,8 @@
 import items
 import world
 import npcs
+import datetime
+from datetime import timedelta
 
  
 class Player():
@@ -13,6 +15,11 @@ class Player():
         self.badged = False
         self.moves = 0
         self.compass = True
+        self.time = datetime.datetime(2015, 6, 1, 9, 0, 0)
+
+    def add_time(self):
+        self.time += timedelta(seconds=180)
+
     def is_alive(self):
         return self.hp > 0
  
@@ -74,12 +81,12 @@ class Player():
         #         room.npcs.append(npc)
 
         print room.room_name()
-
+        print room.x, room.y
         room.default(self)
         if room.npcs:
             for npc in room.npcs:
-                npc.default(self)
-        
+                #npc.default(self)
+                pass
         print room.intro_text()
         if room.inventory:
              for item in room.inventory:
@@ -92,19 +99,6 @@ class Player():
 
         room.exits_text(self)         
 
-        # print room.room_name()
-        # room.default(self)
-        # print room.intro_text()
-        # if room.inventory is not None:
-        #     for item in room.inventory:
-        #         print "\t{} is here.".format(item.name)
-        # room.exits_text(player)
-
-
-
-
-        # print(world.tile_exists(self.location_x, self.location_y).room_name())
-        # print(world.tile_exists(self.location_x, self.location_y).intro_text())
 
     def move_north(self):
         self.move(dx=0, dy=-1)

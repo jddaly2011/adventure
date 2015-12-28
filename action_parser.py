@@ -4,16 +4,19 @@ from player import Player
 #from helpa import helpa
 import os
 import re
+import datetime
 
-
-def add_move(player):
+def add_move(player, room):
     player.moves+= 1
+    player.add_time()
 #     room.default(player)
 #     if hasattr(room, "npcs"):
 #         for npc in room.npcs:
 #             npc.default(player)
     print "\tMoves: {}".format(player.moves)
-
+    print "\t{}".format(room.room_name()),
+    mytime = player.time.strftime("%H:%M")
+    print mytime
 def loadImports(path):
     files = os.listdir(path)
     imps = []
@@ -49,7 +52,7 @@ def action_parser(action_input, available_actions, player, room):
          for action in available_actions:
             if action_input == action.hotkey:
                 player.do_action(action, **action.kwargs)
-                add_move(player)
+                add_move(player, room)
                
                 return
       else:
@@ -78,6 +81,6 @@ def action_parser(action_input, available_actions, player, room):
        else:
            func = "{}.{}(commands, available_actions, player, room)".format(commands[0], commands[0])
            exec func                     
-           add_move(player)
+           add_move(player, room)
            print "\n"
 

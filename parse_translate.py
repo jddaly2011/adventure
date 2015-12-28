@@ -4,6 +4,11 @@ import re
 import sys
 def parse_translate(action_input):
    action_input = action_input.strip()
+   if action_input.startswith("schedule"):
+      print "SCHEDULE"
+      words = action_input.split()
+      print type(words) 
+      return words
    action_input = action_input.lower()
    
    if action_input == "l":

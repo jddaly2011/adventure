@@ -35,7 +35,7 @@ class Fridge(Openable):
                                    shortnames=['fridge', 'refrigerator', 'icebox'],
                                    takeable=False,
 #                                   inventory=["lunch", "coffee"],
-                                   inventory=[Lunch()],
+                                   inventory=[Sandwich()],
                                    opened=False
                                    )
 
@@ -118,12 +118,12 @@ class Food(Item):
         super(Food, self).__init__(name, description, value, shortnames, takeable)
 
 
-class Lunch(Food):
+class Sandwich(Food):
     def __init__(self):
-        super(Lunch, self).__init__(name="a bagged lunch",
-                                   description="\tIt is a bagged lunch that has 'Bob' written on it'",
+        super(Sandwich, self).__init__(name="a sandwich",
+                                   description="\tIt is a sandwich lunch that has 'Bob' written on the wrapper",
                                    value=10, 
-                                   shortnames=['lunch'],
+                                   shortnames=['sandwich'],
                                      takeable=True,
                                     eatable=True,
                                     eaten=False

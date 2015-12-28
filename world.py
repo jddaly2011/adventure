@@ -33,27 +33,26 @@ def tile_exists(x, y):
     #     print x, y
     # if _world[(x,y)] is not None:
     #     print _world[(x,y,)].room_name
+#    print type(_world.get((x, y)))
     return _world.get((x, y))
 
-# def puzzle(x, y, tile_name):
-#     print x,y,tile_name
-#     getattr(__import__('tiles'), tile_name)(x, y)
-#     return _world.get((x, y))
+def allrooms():
+    xtemp = []
+    ytemp = []
+    for x, y in _world:
+        xtemp.append(x)
+        ytemp.append(y)
+    temp = zip(xtemp, ytemp)
+    return temp
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def mapref():
+    refmap = {}
+    for x, y in _world:
+        ref = (x, y)
+        tmproom = tile_exists(x, y)
+        if tmproom:
+            refmap[tmproom.name] = ref
+    return refmap
 
 

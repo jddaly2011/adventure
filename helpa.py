@@ -3,11 +3,11 @@
 def helpa():
     print """
     MOVING:
-    type e to move east, etc. 
+    type e to move east, w to move west, etc. 
     'compass off' turns off compass, 'compass on' turns it on
     
     ACTIONS:
-    examine 
+    examine [item]
     take [item]
     drop [item]
     wear [item]
