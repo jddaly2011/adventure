@@ -2,13 +2,17 @@ import cmd
 import world, tiles, items
 from player import Player
 from helpa import helpa
-from schedule import sched
+from npcschedule import sched
 #from action_parse import action_parser
 from action_parser import action_parser
 
 from parse_translate import parse_translate # natural languiage to game speak
 
 def describe_room(room):
+    print "\tMoves: {}".format(player.moves)
+    print "\t{}".format(room.room_name()),
+    mytime = player.time.strftime("%H:%M")
+    print mytime
 
     print room.intro_text()
     if room.inventory:
@@ -66,7 +70,7 @@ def play():
                     if tmproom and tmproom.npcs:
                         for npc in tmproom.npcs:
                             if npc.name not in npclist: #we haven't called default on npc yet for this move
-                                npc.default(player)
+                                npc.default(player, world)
                                 npclist.append(npc.name)
                                 #print "called default on {}".format(npc.name)
         Prompt().cmdloop()
@@ -77,7 +81,7 @@ class Prompt(cmd.Cmd):
     prompt = '\t> '
     def default(self, line):
         action_input = parse_translate(line)
-        if "schedule" in action_input:
+        if "npcschedule" in action_input:
             sched(action_input, available_actions, player, room)
             return
         if action_input != "ERROR":

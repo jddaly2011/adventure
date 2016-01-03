@@ -66,6 +66,28 @@ class Map(Readable):
 
         for line in mymap:
             print line
+
+class Schedule(Readable):
+    def __init__(self):
+        super(Schedule, self).__init__(name="A schedule",
+                                   description="\tIt seems to be the office scheduel for the day", 
+                                   value=10, 
+                                   shortnames=['schedule', 'sked'],
+                                   takeable=True,
+                                   read=False
+                                   )
+
+    def display(self):
+        with open("sked.txt", "r") as f:
+            myschedule = f.read()
+            f.close()
+            myschedule = myschedule.split("\n")
+            myschedule = filter(None, myschedule)
+
+        print "The schedule reads:\n\n"
+
+        for line in myschedule:
+            print line
         
 
 class Clipboard(Readable):

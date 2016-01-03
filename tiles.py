@@ -233,7 +233,7 @@ class Reception(LockedDoorRoom):
 
         self.solved = False 
         self.door = "north"
-        self.inventory = [items.Map()]
+        self.inventory = [items.Map(), items.Schedule()]
 #        self.npcs= []
         self.npcs =  [npcs.Receptionist(self.x, self.y)]
 

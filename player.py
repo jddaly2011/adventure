@@ -16,6 +16,7 @@ class Player():
         self.moves = 0
         self.compass = True
         self.time = datetime.datetime(2015, 6, 1, 9, 0, 0)
+#        self.time = datetime.time(9, 0, 0)
 
     def add_time(self):
         self.time += timedelta(seconds=180)
@@ -80,7 +81,12 @@ class Player():
         #     for npc in npcs_to_move:
         #         room.npcs.append(npc)
 
-        print room.room_name()
+        print "\tMoves: {}".format(self.moves)
+        print "\t{}".format(room.room_name()),
+        mytime = self.time.strftime("%H:%M")
+        print mytime
+
+#        print room.room_name()
         print room.x, room.y
         room.default(self)
         if room.npcs:

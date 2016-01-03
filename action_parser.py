@@ -13,10 +13,10 @@ def add_move(player, room):
 #     if hasattr(room, "npcs"):
 #         for npc in room.npcs:
 #             npc.default(player)
-    print "\tMoves: {}".format(player.moves)
-    print "\t{}".format(room.room_name()),
-    mytime = player.time.strftime("%H:%M")
-    print mytime
+#    print "\tMoves: {}".format(player.moves)
+    # print "\t{}".format(room.room_name()),
+    # mytime = player.time.strftime("%H:%M")
+    # print mytime
 def loadImports(path):
     files = os.listdir(path)
     imps = []
@@ -57,7 +57,7 @@ def action_parser(action_input, available_actions, player, room):
                 return
       else:
          print "\tYou walk into a wall."
-         add_move(player)
+         add_move(player, room)
          return
 
    else:

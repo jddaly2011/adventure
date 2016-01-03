@@ -1,4 +1,8 @@
 import actions, world, items, player, tiles
+import datetime
+from datetime import timedelta
+
+
 class NPC(object):
     def __init__(self, x, y):
         self.x= x
@@ -7,29 +11,59 @@ class NPC(object):
         self.dest = None
         self.last =[]
         self.nd = {}
-    def default(self, player):
+
+    def check_sked(self, player, world):
+        maprefs = world.mapref()
+       
+        with open("sked.txt", "r") as f:
+            master = f.read()
+            f.close()
+        when, where, who = master.split()
+        who = who.split(",")
+        hour = int(when[0:2])
+        minute= int(when[2:4])
+        t = datetime.datetime(2015, 6, 1, hour, minute, 0)
+        skedtime = t.time()
+        playertime = player.time.time()
+        phour, pminute = playertime.hour, playertime.minute
+        maprefs = world.mapref()
+        for w in who:
+            if w in self.shortnames:
+                if phour == hour:
+                    x, y = maprefs[where]
+                    self.dest = True
+                    self.dest_x, self.dest_y = x, y
+                else: #check if we need to go home
+                    home_x, home_y = maprefs[self.home]
+                    if (home_x, home_y) != (self.x, self.y): #go home
+                        self.dest = True
+                        self.dest_x = home_x
+                        self.dest_y = home_y
+
+    def default(self, player, world):
         self.moves += 1
+        self.check_sked(player, world)
         if self.dest:
-            print self.shortnames[0]
-            print self.x, self.y
-            print self.nd
+            #print self.shortnames[0]
+            #print self.x, self.y
+            #print self.nd
             this_room = world.tile_exists(self.x, self.y)
-            print this_room.npcs
-            if self.x == self.destx and self.y == self.desty: #we made it
-                print "Trip completed {}, {}".format(self.x, self.y)
+            #print this_room.npcs
+            if self.x == self.dest_x and self.y == self.dest_y: #we made it
+                #print "Trip completed {}, {}".format(self.x, self.y)
                 self.nd = {}
                 self.dest = None
                 return
             if self.moves % 2 != 0: #wait two moves before moving
-                print "WAITING~~"
+                #print "WAITING~~"
                 return
             else:
-                print "MOVING"
+                #print "MOVING"
                 available_exits = self.exits()
-                print "Exits: {}".format(available_exits)
+                #print "Exits: {}".format(available_exits)
                 x, xdir, y, ydir = self.get_dir()
                 
-                print self.nd
+                #print self.nd
                 if len(available_exits) == 1:
                     func = "self.move_{}(this_room, player)".format(available_exits[0])
                     exec func                     
@@ -55,7 +89,7 @@ class NPC(object):
 
                 elif ydir:
                     if (self.x, self.y + y) in self.nd:
-                        print nd
+                        #print nd
                         if self.nd[(self.x, self.y + y)] < 2:
                             if ydir in available_exits:
                                 func = "self.move_{}(this_room, player)".format(xdir)
@@ -79,59 +113,59 @@ class NPC(object):
     def get_dir(self):
         x = 0
         y = 0
-        if self.x < self.destx and world.tile_exists(self.x + 1, self.y):
-            print "xdir is east"
+        if self.x < self.dest_x and world.tile_exists(self.x + 1, self.y):
+            #print "xdir is east"
             xdir = 'east'
             x = 1
-        elif self.x > self.destx and world.tile_exists(self.x - 1, self.y):
+        elif self.x > self.dest_x and world.tile_exists(self.x - 1, self.y):
             xdir = 'west'
             x = -1
-            print "xdir is west"
+            #print "xdir is west"
         else:
             xdir = None
             x = 0
-            print "xdir is None"
-        if self.y > self.desty and world.tile_exists(self.x, self.y -1):
+            #print "xdir is None"
+        if self.y > self.dest_y and world.tile_exists(self.x, self.y -1):
             ydir = "north"
             y = -1
-            print "ydir is north"
-        elif self.y <  self.desty and world.tile_exists(self.x, self.y +1):
-            print "ydir is south"
+            #print "ydir is north"
+        elif self.y <  self.dest_y and world.tile_exists(self.x, self.y +1):
+            #print "ydir is south"
             ydir = "south"
             y = 1
         else:
             ydir = None
-            print "ydir is None"
+            #print "ydir is None"
             y = 0
         return x, xdir, y, ydir
 
     def move_east(self, this_room, player):
-        print "moving east"
+        #print "moving east"
         self.move_npc(this_room, 1, 0, player)
 
     def move_west(self, this_room, player):
-        print "moving west"
+        #print "moving west"
         self.move_npc(this_room, -1, 0, player)
 
     def move_north(self, this_room, player):
-        print "moving north"
+        #print "moving north"
         self.move_npc(this_room, 0, -1, player)
 
     def move_south(self, this_room, player):
-        print "moving south"
+        #print "moving south"
         self.move_npc(this_room, 0, 1, player)
 
     def move_npc(self, this_room, x, y, player):
-        print "x: {} y: {}".format(x, y)
+        #print "x: {} y: {}".format(x, y)
         this_room.npcs.remove(self)
         new_room = world.tile_exists(self.x + x, self.y + y)
         new_room.npcs.append(self)
-        print this_room.npcs
+        #print this_room.npcs
         self.last.append((self.x, self.y))
         self.update_nd()
         self.x += x
         self.y += y
-        print "new loc {}, {}".format(self.x, self.y)
+        #print "new loc {}, {}".format(self.x, self.y)
 
         if player.location_x == this_room.x and player.location_y == this_room.y:
             if x != 0:
@@ -148,7 +182,7 @@ class NPC(object):
             print "\t{} leaves the room to the {}.".format(self.name, mydir)
             return
         elif player.location_x == new_room.x and player.location_y == new_room.y:
-            print "entering"
+            #print "entering"
 
             print "\t{} enters the room.".format(self.name)
 
@@ -178,10 +212,10 @@ class CFO(NPC):
     def __init__(self, x,y):
         super(CFO ,self).__init__(x, y)
         self.name="The CFO"
-        self.shortnames = ['cfo']
+        self.shortnames = ['CFO', 'cfo']
         self.description = "\tThe CFO appears to be a large white rabbit wearing a top hat and waistcoat."
         self.inventory=[items.Clipboard()]
-
+        self.home = "CFOOffice"
 
 
 class CEO(NPC):
@@ -191,6 +225,7 @@ class CEO(NPC):
         self.shortnames = ['CEO','ceo']
         self.description = "\tThe CEO strongly resembles Richard Branson, especially the smell."
         self.inventory=[]
+        self.home = "CEOOffice"
 
 
 class CIO(NPC):
@@ -200,6 +235,7 @@ class CIO(NPC):
         self.shortnames = ['CIO','cio']
         self.description = "\tThe CIO is an Android-American."
         self.inventory=[]
+        self.home = "CIOOffice"
 
 
 
@@ -215,9 +251,11 @@ class Receptionist(NPC):
         self.description = "\tThe receptionist is Branislav, a former champion weightlifter."
         self.inventory=[]
         self.intro=False
-    def default(self, player):
+        self.home = "Reception"
+
+    def receptionist_default(self, player):
         self.moves += 1
-#        print "\tRoom moves: {}".format(self.moves)
+#        #print "\tRoom moves: {}".format(self.moves)
         if player.badged:
             if not self.intro and player.location_x == self.x and player.location_y == self.y:
                 print "\tBranislav speaks:"
@@ -229,4 +267,4 @@ class Receptionist(NPC):
 
         if player.moves % self.moves == 0 and player.location_x == self.x and player.location_y == self.y:
             print "\tConversation goes here"
-            print player.moves % self.moves
+            #print player.moves % self.moves
